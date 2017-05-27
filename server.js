@@ -26,7 +26,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "index" }));
 app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/testscrape");
+mongoose.connect("mongodb://heroku_v6502kk2:fi7c31gvelk9om2uqfdl1lj7qo@ds155201.mlab.com:55201/heroku_v6502kk2");
 var db = mongoose.connection;
 db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
