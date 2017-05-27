@@ -1,0 +1,36 @@
+{
+  "name": "news",
+  "version": "1.0.0",
+  "description": "news web scraper",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzzllvl/news.git"
+  },
+  "keywords": [
+    "news",
+    "web",
+    "scraper"
+  ],
+  "author": "Gregory Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lzzllvl/news/issues"
+  },
+  "homepage": "https://github.com/lzzllvl/news#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "cheerio": "^0.22.0",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.10",
+    "mongodb": "^2.2.27",
+    "mongoose": "^4.10.2",
+    "morgan": "^1.8.2",
+    "request": "^2.81.0"
+  }
+}
