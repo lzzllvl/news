@@ -4,11 +4,10 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+
 const PORT = process.env.PORT || 8080;
 
-const request = require("request");
-const cheerio = require("cheerio");
 // use bluebird promises - based on example
 const Promise = require("bluebird");
 
@@ -17,13 +16,32 @@ mongoose.Promise = Promise;
 const app = express();
 
 //middleware
+app.use(methodOverride("_method"));
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static("public"));
 
 //templating engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({ defaultLayout: "index" }));
 app.set("view engine", "handlebars");
 
+// Database configuration with mongoose
+mongoose.connect("mongodb://localhost/testscrape");
+var db = mongoose.connection;
+db.on("error", function(error) {
+  console.log("Mongoose Error: ", error);
+});
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
 
 
+//routes
+const router = express.Router();
+require('./routes/userroutes.js')(router, db);
+
+app.use('/', router);
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}...`);
+})
