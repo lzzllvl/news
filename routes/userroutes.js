@@ -39,13 +39,21 @@ module.exports = function(router) {
   });
 
   router.post('/api/add/:articleId', function(req, res) {
-    let newComment = new Comment(req.body);
+    let comment = req.body.body;
+    let post = {
+      "title": comment[0],
+      "body": comment[1]};
+    let newComment = new Comment(post);
     newComment.save(function(error, doc) {
       if(error) {
         console.log(error);
         res.send(error);
       } else {
-        Article.findOneAndUpdate({}, {$push: {'comments': doc._id}}, {new: true}, function(err) {
+        Article.findOneAndUpdate({
+          _id: req.params.articleId
+        }, { $push:
+            {'comments': doc._id}
+        }, {new: true}, function(err) {
           err ? res.send(err): res.redirect('/');
         })
       }
