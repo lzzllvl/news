@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 const Article = require('../models/Article.js');
 const Comment = require('../models/Comment.js');
 
-module.exports = function(router, db) {
+module.exports = function(router) {
   router.get('/scrape', function(req, res) {
     console.log("requesting onion")
     request('http://www.theonion.com/section/local/', function(err, response, html){
@@ -29,8 +29,8 @@ module.exports = function(router, db) {
   router.get('/', function(req, res) {
     Article.find().populate('comments', 'title body').exec(function(error, data) {
       if(!error) {
-        res.json(data);
-        //res.render('news', {data : data});
+        //res.json(data);
+        res.render('news', {data : data});
       } else {
         console.log(error);
         res.send(error);
@@ -38,13 +38,24 @@ module.exports = function(router, db) {
     });
   });
 
-  router.post('/api/:articleName', function(req, res) {
-
+  router.post('/api/add/:articleId', function(req, res) {
+    let newComment = new Comment(req.body);
+    newComment.save(function(error, doc) {
+      if(error) {
+        console.log(error);
+        res.send(error);
+      } else {
+        Article.findOneAndUpdate({}, {$push: {'comments': doc._id}}, {new: true}, function(err) {
+          err ? res.send(err): res.redirect('/');
+        })
+      }
+    });
   });
 
-  router.delete('/api/:commentName', function(req, res) {
+  router.delete('/api/delete/:commentId', function(req, res) {
+    Comment.remove({'_id': req.params.commentId}, function(err) {
+      err ? res.send(err): res.redirect('/');
+    });
 
-    res.redirect('/');
   });
-
 }

@@ -1,0 +1,27 @@
+<section>
+  {{#each data}}
+    <p><b>
+      <a href={{this.link}}>{{this.title}}</a>
+    </b></p>
+    <form action='/api/add/{{this._id}}' method="post">
+      <input type='text' name='body' val='' placeholder="Title"/>
+      <input type='textarea' name='body' val='' placeholder="Comment Body"/>
+      <button class='btn btn-success'>&#10003;</button>
+    </form>
+    {{#each this.comments}}
+      <h5>{{this.title}}</h5>
+      <p><em>{{this.body}}<em><p>
+      <button
+      data-id='{{this._id}}' class="comment btn btn-danger">X</button>
+
+    {{/each}}
+  {{/each}}
+  <script>
+  $(".comment").on('click', function(){
+    var id = $(this).data('id');
+    $.post('/api/delete/'+ id +'?_method=delete', function(res){
+      window.location = '/';
+    });
+  });
+  </script>
+</section>
