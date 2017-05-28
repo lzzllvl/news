@@ -30,6 +30,7 @@ module.exports = function(router) {
     Article.find().populate('comments', 'title body').exec(function(error, data) {
       if(!error) {
         //res.json(data);
+        data = data.reverse();
         data.comments = data.comments.reverse();
         res.render('news', {data : data});
       } else {
