@@ -30,6 +30,7 @@ module.exports = function(router) {
     Article.find().populate('comments', 'title body').exec(function(error, data) {
       if(!error) {
         //res.json(data);
+        data.comments = data.comments.reverse();
         res.render('news', {data : data});
       } else {
         console.log(error);
@@ -64,6 +65,5 @@ module.exports = function(router) {
     Comment.remove({'_id': req.params.commentId}, function(err) {
       err ? res.send(err): res.redirect('/');
     });
-
   });
 }
