@@ -31,7 +31,6 @@ module.exports = function(router) {
       if(!error) {
         //res.json(data);
         data = data.reverse();
-        data.comments = data.comments.reverse();
         res.render('news', {data : data});
       } else {
         console.log(error);
